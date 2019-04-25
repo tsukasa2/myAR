@@ -9,12 +9,22 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let scene = SCNScene(named: "models.scnassets/eevee/ev.scn")!
+        let scene = SCNScene(named: "models.scnassets/eevee/eevee.scn")!
         //let scene = SCNScene()
+        let eeveeNode = scene.rootNode.childNode(withName: "eevee_model", recursively: true)
+        let (min, max) = (eeveeNode?.boundingBox)!
+        let w = CGFloat(max.x - min.x)
+        let magnification = 0.3/w
+        eeveeNode?.scale = SCNVector3(magnification, magnification, magnification)
+        eeveeNode?.position = SCNVector3(0,0,0)
+        //eeveeNode?.scale = SCNVector3(0.5, 0.5, 0.5)
+        sceneView.scene.rootNode.addChildNode(eeveeNode!)
+        
         sceneView.delegate = self
         sceneView.showsStatistics = true
         sceneView.debugOptions = ARSCNDebugOptions.showFeaturePoints
-        sceneView.scene = scene
+        //sceneView.scene = scene
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
